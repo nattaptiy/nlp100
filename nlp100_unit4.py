@@ -187,6 +187,7 @@ plt.show()
 plt.close()
 
 #39
+print('#39')
 
 plt.scatter(
     range(1,len(counts)+1),
