@@ -100,3 +100,22 @@ def find_kaku(target):
         return prts_tmp[-1].surface
     else:
         return ''
+
+def find_sa(target):
+    for i, morph in enumerate(target.morphs[0:-1]):
+        if (morph.pos == '名詞') and (morph.pos1 == 'サ変接続') and (target.morphs[i + 1].pos == '助詞') and (target.morphs[i + 1].surface == 'を'):
+            return morph.surface + target.morphs[i + 1].surface
+    return ''
+
+def noun_change(target, ch, ending=False):
+    result = ''
+    for morph in target.morphs:
+        if morph.pos != '記号':
+            if morph.pos == '名詞':
+                result += ch
+                if ending:
+                    return result
+                ch = ''
+            else:
+                result += morph.surface
+    return result

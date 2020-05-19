@@ -16,4 +16,4 @@ for chunks in build_morphs():
             key=lambda x: find_kaku(x)
         )
 
-        print('{}\t{} {}'.format(verbs[0].base,' '.join(find_kaku(prt) for prt in prts),' '.join(clean_sym(prt) for prt in prts)))
+        print('{}\t{}\t{}'.format(verbs[0].base,' '.join(find_kaku(prt) for prt in prts),' '.join(clean_sym(prt) for prt in prts)))
