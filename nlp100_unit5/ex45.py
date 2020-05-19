@@ -12,8 +12,6 @@ for chunks in build_morphs():
         if len(prts) < 1:
             continue
 
-        prts.sort(
-            key=lambda x: find_kaku(x)
-        )
+        prts.sort(key=lambda x: find_kaku(x))
 
         print('{}\t{}'.format(verbs[0].base,' '.join(find_kaku(prt) for prt in prts)))

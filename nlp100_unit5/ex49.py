@@ -25,7 +25,7 @@ for chunks in build_morphs():
                 dst = chunks[index_y].dst
                 while dst != -1:
                     if dst in path_x:
-                        index_cross = dst  # Xの経路とぶつかった
+                        index_cross = dst
                         break
                     else:
                         dst = chunks[dst].dst
