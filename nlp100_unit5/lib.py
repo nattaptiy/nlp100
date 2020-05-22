@@ -83,6 +83,7 @@ def chk_pos(target, pos):
         if morph.pos == pos:
             return True
         return False
+
 def morphs_pos(target, pos, pos1=''):
     if len(pos1) > 0:
         return [res for res in target.morphs if (res.pos == pos) and (res.pos1 == pos1)]
@@ -90,14 +91,11 @@ def morphs_pos(target, pos, pos1=''):
         return [res for res in target.morphs if res.pos == pos]
 
 def find_kaku(target):
-    prts_tmp = morphs_pos(target,'助詞')
-    if len(prts_tmp) > 1:
-        kaku = morphs_pos(target,'助詞', '格助詞')
-        if len(kaku) > 0:
-            prts_tmp = kaku
-
+    prts_tmp = morphs_pos(target,'助詞', '格助詞')
+    if len(prts_tmp) == 0:
+        prts_tmp = morphs_pos(target,'助詞')
     if len(prts_tmp) > 0:
-        return prts_tmp[-1].surface
+        return prts_tmp[0].surface
     else:
         return ''
 
