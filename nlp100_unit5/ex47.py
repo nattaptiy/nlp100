@@ -30,4 +30,4 @@ with open(result, mode='w',encoding='utf-8') as out_file:
 
             # print('{}\t{}\t{}'.format(sa_prts+verbs[0].base,' '.join(find_kaku(prt) for prt in prts),' '.join(clean_sym(prt) for prt in prts)))
 
-            out_file.write('{}\t{}\t{}'.format(sa_prts + verbs[0].base,' '.join(find_kaku(prt) for prt in prts),' '.join(clean_sym(prt) for prt in prts)))
+            out_file.write('{}\t{}\t{}\n'.format(sa_prts + verbs[0].base,' '.join(find_kaku(prt) for prt in prts),' '.join(clean_sym(prt) for prt in prts)))
