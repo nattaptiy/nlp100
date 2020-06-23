@@ -5,15 +5,20 @@ import string
 import re
 import random
 import numpy as np
+import nltk
 
 import torch
 import torch.nn as nn
 from torch import optim
 import torch.nn.functional as F
 
+from torch.utils.data import TensorDataset, DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SOS_token = 0
 EOS_token = 1
+writer = SummaryWriter()
 
 print(device)
 
@@ -207,7 +212,6 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
             loss += criterion(decoder_output, target_tensor[di])
             if decoder_input.item() == EOS_token:
                 break
-
     loss.backward()
 
     encoder_optimizer.step()
@@ -217,9 +221,8 @@ def train(input_tensor, target_tensor, encoder, decoder, encoder_optimizer, deco
 
 
 def trainIters(encoder, decoder, n_iters, learning_rate=0.01, print_every=5000):
-    plot_losses = []
+    writer = SummaryWriter('logs/model'+str(n_iters)+'/')
     print_loss_total = 0  # Reset every print_every
-    plot_loss_total = 0  # Reset every plot_every
 
     encoder_optimizer = optim.SGD(encoder.parameters(), lr=learning_rate)
     decoder_optimizer = optim.SGD(decoder.parameters(), lr=learning_rate)
@@ -235,8 +238,7 @@ def trainIters(encoder, decoder, n_iters, learning_rate=0.01, print_every=5000):
         loss = train(input_tensor, target_tensor, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
         print_loss_total += loss
-        plot_loss_total += loss
-
+        writer.add_scalar('Loss/train', loss, iter)
         if iter % print_every == 0:
             print_loss_avg = print_loss_total / print_every
             print_loss_total = 0
@@ -282,7 +284,7 @@ encoder1 = EncoderRNN(input_lang.n_words, hidden_size).to(device)
 attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
 
 print('Training...')
-trainIters(encoder1, attn_decoder1, 1000,print_every=100)
+trainIters(encoder1, attn_decoder1, 1000,print_every=10)
 
 import MeCab
 def translate(s):
@@ -297,7 +299,6 @@ def translate(s):
 s = '猫です'
 print (translate(s))
 
-import nltk
 test_ja = 'kftt-data-1.0/data/tok/kyoto-test.ja'
 test_en = 'kftt-data-1.0/data/tok/kyoto-test.en'
 _, _, test_pairs = prepareData(test_ja, test_en)
