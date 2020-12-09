@@ -1,5 +1,5 @@
 #00
-text='stressed123'[::-1]
+text='stressed123456'[::-1]
 print(text)
 
 #01
